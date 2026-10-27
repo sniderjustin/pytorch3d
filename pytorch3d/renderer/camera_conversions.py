@@ -14,6 +14,7 @@ import torch
 from ..transforms import matrix_to_rotation_6d
 from .cameras import PerspectiveCameras
 
+
 LOGGER = logging.getLogger(__name__)
 
 
@@ -124,30 +125,32 @@ def _pulsar_from_opencv_projection(
 
     # Validate parameters.
     image_size_wh = image_size.to(R).flip(dims=(1,))
-    assert torch.all(
-        image_size_wh > 0
-    ), "height and width must be positive but min is: %s" % (
-        str(image_size_wh.min().item())
+    assert torch.all(image_size_wh > 0), (
+        "height and width must be positive but min is: %s"
+        % (str(image_size_wh.min().item()))
     )
-    assert (
-        camera_matrix.size(1) == 3 and camera_matrix.size(2) == 3
-    ), "Incorrect camera matrix shape: expected 3x3 but got %dx%d" % (
-        camera_matrix.size(1),
-        camera_matrix.size(2),
+    assert camera_matrix.size(1) == 3 and camera_matrix.size(2) == 3, (
+        "Incorrect camera matrix shape: expected 3x3 but got %dx%d"
+        % (
+            camera_matrix.size(1),
+            camera_matrix.size(2),
+        )
     )
-    assert (
-        R.size(1) == 3 and R.size(2) == 3
-    ), "Incorrect R shape: expected 3x3 but got %dx%d" % (
-        R.size(1),
-        R.size(2),
+    assert R.size(1) == 3 and R.size(2) == 3, (
+        "Incorrect R shape: expected 3x3 but got %dx%d"
+        % (
+            R.size(1),
+            R.size(2),
+        )
     )
     if len(tvec.size()) == 2:
         tvec = tvec.unsqueeze(2)
-    assert (
-        tvec.size(1) == 3 and tvec.size(2) == 1
-    ), "Incorrect tvec shape: expected 3x1 but got %dx%d" % (
-        tvec.size(1),
-        tvec.size(2),
+    assert tvec.size(1) == 3 and tvec.size(2) == 1, (
+        "Incorrect tvec shape: expected 3x1 but got %dx%d"
+        % (
+            tvec.size(1),
+            tvec.size(2),
+        )
     )
     # Check batch size.
     batch_size = camera_matrix.size(0)
@@ -155,21 +158,22 @@ def _pulsar_from_opencv_projection(
         batch_size,
         R.size(0),
     )
-    assert (
-        tvec.size(0) == batch_size
-    ), "Expected tvec to have batch size %d. Has size %d." % (
-        batch_size,
-        tvec.size(0),
+    assert tvec.size(0) == batch_size, (
+        "Expected tvec to have batch size %d. Has size %d."
+        % (
+            batch_size,
+            tvec.size(0),
+        )
     )
     # Check image sizes.
     image_w = image_size_wh[0, 0]
     image_h = image_size_wh[0, 1]
-    assert torch.all(
-        image_size_wh[:, 0] == image_w
-    ), "All images in a batch must have the same width!"
-    assert torch.all(
-        image_size_wh[:, 1] == image_h
-    ), "All images in a batch must have the same height!"
+    assert torch.all(image_size_wh[:, 0] == image_w), (
+        "All images in a batch must have the same width!"
+    )
+    assert torch.all(image_size_wh[:, 1] == image_h), (
+        "All images in a batch must have the same height!"
+    )
     # Focal length.
     fx = camera_matrix[:, 0, 0].unsqueeze(1)
     fy = camera_matrix[:, 1, 1].unsqueeze(1)

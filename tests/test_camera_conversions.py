@@ -22,6 +22,7 @@ from pytorch3d.utils import (
 
 from .common_testing import get_tests_dir, TestCaseMixin
 
+
 DATA_DIR = get_tests_dir() / "data"
 
 
