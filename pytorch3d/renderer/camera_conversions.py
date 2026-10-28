@@ -96,13 +96,8 @@ def _opencv_from_cameras_projection(
     scale = scale.expand(-1, 2)
     c0 = image_size_wh / 2.0
 
-    if cameras.in_ndc():
-        principal_point = -p0_pytorch3d * scale + c0
-        focal_length = focal_pytorch3d * scale
-    else:
-        # Screen-space intrinsics are already in OpenCV pixel units.
-        principal_point = p0_pytorch3d
-        focal_length = focal_pytorch3d
+    principal_point = -p0_pytorch3d * scale + c0
+    focal_length = focal_pytorch3d * scale
 
     camera_matrix = torch.zeros_like(R)
     camera_matrix[:, :2, 2] = principal_point

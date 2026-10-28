@@ -163,7 +163,7 @@ class TestCameraConversions(TestCaseMixin, unittest.TestCase):
         Tests that `opencv_from_cameras_projection` reads the intrinsics of
         cameras defined with an explicit calibration matrix `K`, and that the
         resulting OpenCV cameras project points to the same pixels as the
-        PyTorch3D cameras, for NDC and screen-space cameras.
+        PyTorch3D cameras.
         """
         N = 2
         image_size = torch.tensor([[480, 640]] * N)
@@ -180,23 +180,11 @@ class TestCameraConversions(TestCaseMixin, unittest.TestCase):
         K[:, 2, 3] = 1.0
         K[:, 3, 2] = 1.0
 
-        # The same cameras in screen space (scale = min(H, W) / 2 = 240).
-        scale = 240.0
-        image_center = torch.tensor([320.0, 240.0])
-
         cameras = {
             "focal_pp": PerspectiveCameras(
                 focal_length=focal_length, principal_point=principal_point, R=R, T=T
             ),
             "K": PerspectiveCameras(K=K, R=R, T=T),
-            "screen": PerspectiveCameras(
-                focal_length=focal_length * scale,
-                principal_point=image_center - principal_point * scale,
-                R=R,
-                T=T,
-                in_ndc=False,
-                image_size=image_size,
-            ),
         }
 
         expected_camera_matrix = torch.tensor(

@@ -83,7 +83,7 @@ def opencv_from_cameras_projection(
     Args:
         cameras: A batch of `N` cameras in the PyTorch3D convention. The
             intrinsics may be given either as `focal_length` / `principal_point`
-            or as an explicit calibration matrix `K`, in NDC or screen space.
+            or as an explicit calibration matrix `K`.
         image_size: A tensor of shape `(N, 2)` containing the sizes of the images
             (height, width) attached to each camera.
         return_as_rotmat (bool): If set to True, return the full 3x3 rotation
