@@ -482,6 +482,7 @@ class TexturesAtlas(TexturesBase):
             else self._num_faces_per_mesh
         )
         tex.valid = self.valid.clone()
+        # pyrefly: ignore[bad-assignment]
         tex._num_faces_per_mesh = num_faces
         return tex
 
@@ -496,6 +497,7 @@ class TexturesAtlas(TexturesBase):
             else self._num_faces_per_mesh
         )
         tex.valid = self.valid.detach()
+        # pyrefly: ignore[bad-assignment]
         tex._num_faces_per_mesh = num_faces
         return tex
 
@@ -982,6 +984,7 @@ class TexturesUV(TexturesBase):
             if torch.is_tensor(self._num_faces_per_mesh)
             else self._num_faces_per_mesh
         )
+        # pyrefly: ignore[bad-assignment]
         tex._num_faces_per_mesh = num_faces
         tex.valid = self.valid.clone()
         return tex
@@ -1014,6 +1017,7 @@ class TexturesUV(TexturesBase):
             if torch.is_tensor(self._num_faces_per_mesh)
             else self._num_faces_per_mesh
         )
+        # pyrefly: ignore[bad-assignment]
         tex._num_faces_per_mesh = num_faces
         tex.valid = self.valid.detach()
         return tex
